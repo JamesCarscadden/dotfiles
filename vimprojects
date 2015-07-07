@@ -1,0 +1,189 @@
+
+Galaxy Traders=/home/james/Developer/galaxytraders CD=. filter="*" {
+ Gemfile
+ Gemfile.lock
+ README.rdoc
+ Rakefile
+ config.ru
+ tags
+ app=app {
+  assets=assets {
+   images=images {
+    rails.png
+   }
+   javascripts=javascripts {
+    application.js.coffee
+   }
+   stylesheets=stylesheets {
+    application.css.scss
+    bootstrap_and_overrides.css.scss
+   }
+  }
+  controllers=controllers {
+   application_controller.rb
+   home_controller.rb
+   users_controller.rb
+  }
+  helpers=helpers {
+   application_helper.rb
+  }
+  mailers=mailers {
+  }
+  models=models {
+   ability.rb
+   role.rb
+   user.rb
+  }
+  views=views {
+   devise=devise {
+    confirmations=confirmations {
+     new.html.haml
+    }
+    mailer=mailer {
+     confirmation_instructions.html.erb
+     reset_password_instructions.html.erb
+     unlock_instructions.html.erb
+    }
+    passwords=passwords {
+     edit.html.erb
+     new.html.erb
+    }
+    registrations=registrations {
+     edit.html.erb
+     new.html.haml
+    }
+    sessions=sessions {
+     _new.html.haml
+     new.html.haml
+    }
+    shared=shared {
+     _links.html.haml
+    }
+    unlocks=unlocks {
+     new.html.haml
+    }
+   }
+   home=home {
+    index.html.haml
+   }
+   layouts=layouts {
+    _messages.html.haml
+    _navigation.html.haml
+    application.html.haml
+   }
+   users=users {
+    _user.html.haml
+    index.html.haml
+    show.html.haml
+   }
+  }
+ }
+ config=config {
+  application.rb
+  application.yml
+  boot.rb
+  cucumber.yml
+  database.yml
+  environment.rb
+  routes.rb
+  secrets.yml
+  environments=environments {
+   development.rb
+   production.rb
+   test.rb
+  }
+  initializers=initializers {
+   assets.rb
+   backtrace_silencers.rb
+   cookies_serializer.rb
+   devise.rb
+   filter_parameter_logging.rb
+   inflections.rb
+   mime_types.rb
+   rolify.rb
+   secret_token.rb
+   session_store.rb
+   wrap_parameters.rb
+  }
+  locales=locales {
+   devise.en.yml
+   en.yml
+  }
+ }
+ db=db {
+  development.sqlite3
+  schema.rb
+  seeds.rb
+  test.sqlite3
+  migrate=migrate {
+   20130604152152_devise_create_users.rb
+   20130621143542_rolify_create_roles.rb
+  }
+ }
+ doc=doc {
+  README_FOR_APP
+ }
+ features=features {
+  step_definitions=step_definitions {
+   email_steps.rb
+   user_steps.rb
+  }
+  support=support {
+   email_spec.rb
+   env.rb
+   paths.rb
+  }
+  users=users {
+   forgot_password.feature
+   sign_in.feature
+   sign_out.feature
+   sign_up.feature
+   user_edit.feature
+   user_show.feature
+  }
+ }
+ lib=lib {
+  assets=assets {
+  }
+  tasks=tasks {
+   bamboo.rake
+   cucumber.rake
+  }
+ }
+ public=public {
+  404.html
+  422.html
+  500.html
+  favicon.ico
+  robots.txt
+ }
+ script=script {
+  cucumber
+  rails
+ }
+ spec=spec {
+  rails_helper.rb
+  spec_helper.rb
+  controllers=controllers {
+   home_controller_spec.rb
+   users_controller_spec.rb
+  }
+  factories=factories {
+   users.rb
+  }
+  models=models {
+   user_spec.rb
+  }
+  support=support {
+   devise.rb
+  }
+ }
+ vendor=vendor {
+  assets=assets {
+   javascripts=javascripts {
+   }
+   stylesheets=stylesheets {
+   }
+  }
+ }
+}
