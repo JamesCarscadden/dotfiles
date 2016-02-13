@@ -20,6 +20,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/tComment'
+Plugin 'TailMinusF'
 
 call vundle#end()
 
