@@ -42,6 +42,16 @@ set splitbelow
 set splitright
 let mapleader="\\"
 
+"" Font
+if has("gui_running")
+  if has("gui_gtk2")
+    ""set guifont=Inconsolata\ 12
+  elseif has("gui_macvim")
+    set guifont=Literation\ Mono\ Powerline:h14
+  elseif has("gui_win32")
+    set guifont=Inconsolata_for_Powerline:h14:cANSI
+  endif
+endif
 
 "" Whitespace
 set nowrap
