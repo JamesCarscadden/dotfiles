@@ -21,6 +21,7 @@ Plugin 'thoughtbot/vim-rspec'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/tComment'
 Plugin 'TailMinusF'
+Plugin 'vim-airline/vim-airline-themes'
 
 call vundle#end()
 
