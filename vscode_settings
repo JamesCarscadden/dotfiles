@@ -1,0 +1,30 @@
+// Place your settings in this file to overwrite the default settings
+{
+    // Controls the rendering size of tabs in characters. Accepted values: "auto", 2, 4, 6, etc. If set to "auto", the value will be guessed when a file is opened.
+	"editor.detectIndentation": true,
+
+	// Controls if the editor will insert spaces for tabs. Accepted values:  "auto", true, false. If set to "auto", the value will be guessed when a file is opened.
+	"editor.insertSpaces": true,
+
+    // Controls whether the editor should render whitespace characters
+	"editor.renderWhitespace": true,
+
+    // When enabled, will trim trailing whitespace when you save a file.
+	"files.trimTrailingWhitespace": true,
+
+// Team Services extension options
+
+	// Set the logging level for the extension (error, warn, info, verbose, debug).
+    "team.logging.level": "debug",
+
+// External Terminal
+
+	// Customizes which terminal to run on Windows.
+	"terminal.external.windowsExec": "\\windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+
+// Integrated Terminal
+
+	// The path of the shell that the terminal uses on Windows. When using shells shipped with Windows (cmd, PowerShell or Bash on Ubuntu), prefer C:\Windows\sysnative over C:\Windows\System32 to use the 64-bit versions.
+	"terminal.integrated.shell.windows": "\\windows\\system32\\WindowsPowerShell\\v1.0\\powershell.exe"
+
+}
