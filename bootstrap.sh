@@ -2,8 +2,8 @@
 
 # Check system
 platform='unknown'
-unamestr=$(uname -r)
-if [[ "$unamestr" == 'Linux'* ]]; then
+unamestr=$(uname)
+if [[ "$unamestr" == 'Linux' ]]; then
   echo "Linux"
   platform='linux'
 elif [[ "$unamestr" == *'Microsoft'* ]]; then
@@ -56,6 +56,15 @@ else
   echo "Fonts already installed, getting latest"
   cd $HOME/Developer/fonts;git pull;cd $HOME
   $HOME/Developer/fonts/install.sh
+fi
+
+# Alter console fonts
+if [ $platform == 'linux' ]
+then
+  echo "Setting up console font ..."
+  sudo cp $HOME/Developer/fonts/Terminus/PSF/*.psf.gz /usr/share/consolefonts
+  sudo cp /etc/default/console-setup /etc/default/console-setup.bak
+  echo 'FONT="ter-powerline-v18n.psf.gz"' > /etc/default/console-setup
 fi
 
 echo ""
