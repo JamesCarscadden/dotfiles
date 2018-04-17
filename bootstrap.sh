@@ -4,37 +4,37 @@
 platform='unknown'
 unamestr=$(uname -a)
 case "$unamestr" in
-  *"armv"*)
-    echo "Rasbian"
+  *'armv'*)
+    echo 'Rasbian'
     platform='raspberry'
     ;;
-  *"Microsoft"*)
-    echo "Windows bash"
+  *'Microsoft'*)
+    echo 'Windows bash'
     platform='winbash'
     ;;
-  "Darwin"*)
+  'Darwin'*)
     echo 'Mac OS X'
     platform='darwin'
     ;;
 esac
 
-echo ""
+echo ''
 
 # Install bash-completion
-echo "Checking for bash-completion ..."
+echo 'Checking for bash-completion ...'
 if [ "$platform" == 'darwin' ] && ! brew ls --versions bash-completion > /dev/null
 then
   brew install bash-completion
 else
-  echo "bash-completion already installed"
+  echo 'bash-completion already installed'
 fi
 
-echo ""
+echo ''
 
 # Install git
 # Assume already installed on darwin
 echo "Checking for git ..."
-if [ ! "$platform" ==  'darwin' ] && [ ! dpkg-query -W -f='${Status}' git | grep "ok installed$" > /dev/null ]
+if [ ! "$platform" ==  'darwin' ] && ! dpkg-query -W -f='${Status}' git | grep "ok installed$" > /dev/null
 then
   sudo apt install git
 else
@@ -45,9 +45,10 @@ echo ""
 
 # Install pip
 echo "Checking for pip ..."
-if [ ! "$platform" == 'darwin' ] && [ ! dpkg-query -W -f='${Status}' python3-pip | grep "ok installed$" > /dev/null ]
+if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' python3-pip | grep "ok installed$" > /dev/null
 then
   sudo apt install python3-pip
+  pip3 install --upgrade pip
 elif [ "$platform" == 'darwin' ] && ! brew ls --versions python3 > /dev/null
 then
   brew install python3
@@ -73,11 +74,17 @@ echo "Checking for powerline fonts ..."
 if [ ! -d "$HOME/Developer/fonts" ]
 then
   git clone https://github.com/powerline/fonts.git --depth=1 $HOME/Developer/fonts
-  $HOME/Developer/fonts/install.sh
+  if ! [ "$platform" == 'winbash' ]
+  then
+    $HOME/Developer/fonts/install.sh
+  fi
 else
   echo "Fonts already installed, getting latest"
   cd $HOME/Developer/fonts;git pull;cd $HOME
-  $HOME/Developer/fonts/install.sh
+  if ! [ "$platform" == 'winbash' ]
+  then
+    $HOME/Developer/fonts/install.sh
+  fi
 fi
 
 # Alter console fonts
@@ -93,7 +100,7 @@ echo ""
 
 # Install tmux
 echo "Checking for tmux ..."
-if [ ! "$platform" == 'darwin' ] && [ ! dpkg-query -W -f='${Status}' tmux | grep "ok installed$" > /dev/null ]
+if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' tmux | grep "ok installed$" > /dev/null
 then
   sudo apt install tmux
 elif [ "$platform" == 'darwin' ] && ! brew ls --versions tmux > /dev/null
@@ -107,7 +114,7 @@ echo ""
 
 # Install vim (with python support)
 echo "Checking for vim with scripting support ..."
-if [ ! "$platform" == 'darwin' ] && [ ! dpkg-query -W -f='${Status}' vim-nox | grep "ok installed$" > /dev/null ]
+if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' vim-nox | grep "ok installed$" > /dev/null
 then
   sudo apt install vim-nox
 elif [ "$platform" == 'darwin' ] && ! brew ls --versions macvim > /dev/null
