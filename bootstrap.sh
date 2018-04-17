@@ -3,16 +3,20 @@
 # Check system
 platform='unknown'
 unamestr=$(uname -a)
-if [[ "$unamestr" == 'Linux' ]]; then
-  echo "Linux"
-  platform='linux'
-elif [[ "$unamestr" == *'Microsoft'* ]]; then
-  echo "Windows bash"
-  platform='winbash'
-elif [[ "$unamestr" == 'Darwin'* ]]; then
-  echo 'Mac OS X'
-  platform='darwin'
-fi
+case "$unamestr" in
+  *"armv"*)
+    echo "Rasbian"
+    platform='raspberry'
+    ;;
+  *"Microsoft"*)
+    echo "Windows bash"
+    platform='winbash'
+    ;;
+  "Darwin"*)
+    echo 'Mac OS X'
+    platform='darwin'
+    ;;
+esac
 
 echo ""
 
@@ -77,7 +81,7 @@ else
 fi
 
 # Alter console fonts
-if [ $platform == 'linux' ]
+if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
 then
   echo "Setting up console font ..."
   sudo cp $HOME/Developer/fonts/Terminus/PSF/*.psf.gz /usr/share/consolefonts
@@ -144,9 +148,13 @@ echo "Linking dotfiles ..."
 ln -sf $HOME/Developer/dotfiles/vimrc $HOME/.vimrc
 ln -sf $HOME/Developer/dotfiles/gitconfig $HOME/.gitconfig
 ln -sf $HOME/Developer/dotfiles/tmux.conf $HOME/.tmux.conf
-#ln -sf $HOME/Developer/dotfiles/lxterminal.conf $HOME/.config/lxterminal/lxterminal.conf
-#ln -sf $HOME/Developer/dotfiles/lxterminal.desktop $HOME/.local/share/applications/lxterminal.desktop
-#lxpanelctl restart
+
+if [ "$platform" == "raspberry" ]
+then
+  ln -sf $HOME/Developer/dotfiles/lxterminal.conf $HOME/.config/lxterminal/lxterminal.conf
+  ln -sf $HOME/Developer/dotfiles/lxterminal.desktop $HOME/.local/share/applications/lxterminal.desktop
+  lxpanelctl restart
+fi
 
 if [ "$platform" == 'darwin' ]
 then
