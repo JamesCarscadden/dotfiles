@@ -77,6 +77,8 @@ then
   if ! [ "$platform" == 'winbash' ]
   then
     $HOME/Developer/fonts/install.sh
+  else
+    /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
   fi
 else
   echo "Fonts already installed, getting latest"
@@ -84,6 +86,8 @@ else
   if ! [ "$platform" == 'winbash' ]
   then
     $HOME/Developer/fonts/install.sh
+  else
+    /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
   fi
 fi
 
@@ -156,7 +160,7 @@ ln -sf $HOME/Developer/dotfiles/vimrc $HOME/.vimrc
 ln -sf $HOME/Developer/dotfiles/gitconfig $HOME/.gitconfig
 ln -sf $HOME/Developer/dotfiles/tmux.conf $HOME/.tmux.conf
 
-if [ "$platform" == "raspberry" ]
+if [ "$platform" == 'raspberry' ]
 then
   ln -sf $HOME/Developer/dotfiles/lxterminal.conf $HOME/.config/lxterminal/lxterminal.conf
   ln -sf $HOME/Developer/dotfiles/lxterminal.desktop $HOME/.local/share/applications/lxterminal.desktop
@@ -167,6 +171,11 @@ if [ "$platform" == 'darwin' ]
 then
   ln -sf $HOME/Developer/dotfiles/bashrc_darwin $HOME/.bashrc
   ln -sf $HOME/Developer/dotfiles/bash_profile_darwin $HOME/.bash_profile
+fi
+
+if [ "$platform" == 'winbash' ]
+then
+  ln -sf $HOME/Developer/dotfiles/bashrc_windows $HOME/.bashrc
 fi
 
 echo ""
