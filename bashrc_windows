@@ -116,4 +116,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export POWERLINE_ROOT=$(pip3 show powerline-status | grep "Location:" | cut -d " " -f 2)
 alias powershell='/mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe'
+
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+
+. $POWERLINE_ROOT/powerline/bindings/bash/powerline.sh
+
