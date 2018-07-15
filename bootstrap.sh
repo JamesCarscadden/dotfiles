@@ -97,7 +97,7 @@ then
   echo "Setting up console font ..."
   sudo cp $HOME/Developer/fonts/Terminus/PSF/*.psf.gz /usr/share/consolefonts
   sudo cp /etc/default/console-setup /etc/default/console-setup.bak
-  echo 'FONT="ter-powerline-v18n.psf.gz"' > /etc/default/console-setup
+  sudo echo 'FONT="ter-powerline-v18n.psf.gz"' > /etc/default/console-setup
 fi
 
 echo ""
