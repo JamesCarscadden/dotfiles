@@ -62,7 +62,7 @@ echo ""
 echo "Checking for powerline ..."
 if ! python3 -c "import powerline" > /dev/null
 then
-  pip3 install powerline-status
+  pip3 install --user powerline-status
 else
   echo "Powerline installed"
 fi
