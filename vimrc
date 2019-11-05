@@ -68,11 +68,6 @@ set smartcase
 set t_Co=256
 colorscheme railscasts
 
-"" Powerline
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-
 "" NET RW
 let g:netrw_liststyle = 3
 let g:netrw_winsize = 80

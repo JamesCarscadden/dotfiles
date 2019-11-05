@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh
 
 # Check system
 platform='unknown'
@@ -20,17 +20,6 @@ esac
 
 echo ''
 
-# Install bash-completion
-echo 'Checking for bash-completion ...'
-if [ "$platform" == 'darwin' ] && ! brew ls --versions bash-completion > /dev/null
-then
-  brew install bash-completion
-else
-  echo 'bash-completion already installed'
-fi
-
-echo ''
-
 # Install git
 # Assume already installed on darwin
 echo "Checking for git ..."
@@ -43,64 +32,100 @@ fi
 
 echo ""
 
-# Install pip
-echo "Checking for pip ..."
-if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' python3-pip | grep "ok installed$" > /dev/null
+# Check for zsh
+if [ "$platform" == 'darwin' ] || [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
 then
-  sudo apt install python3-pip
-  pip3 install --upgrade pip
-elif [ "$platform" == 'darwin' ] && ! brew ls --versions python3 > /dev/null
-then
-  brew install python3
-else
-  echo "pip already installed"
+  echo "Checking for Zsh"
+  if ! zsh --version > /dev/null
+  then
+    echo "Installing Zsh"
+
+    echo "Setting default shell to Zsh"
+    #chsh -s /bin/zsh
+  else
+    echo "Zsh already installed"
+  fi
 fi
 
 echo ""
 
-# Install powerline
-echo "Checking for powerline ..."
-if ! python3 -c "import powerline" > /dev/null
+# Install oh-my-zsh
+if [ "$platform" == 'darwin' ] || [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
 then
-  pip3 install --user powerline-status
-else
-  echo "Powerline installed"
+  echo "Checking for oh-my-zsh"
+  if [ ! -d "$HOME/.oh-my-zsh" ]
+  then
+    echo "installing oh-my-zsh"
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  else
+    echo "oh-my-zsh already installed"
+  fi
 fi
 
 echo ""
 
-# Install powerline fonts
-echo "Checking for powerline fonts ..."
-if [ ! -d "$HOME/Developer/fonts" ]
+# Install Powerlevel10k theme for oh-my-zsh
+if [ "$platform" == 'darwin' ] || [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
 then
-  git clone https://github.com/powerline/fonts.git --depth=1 $HOME/Developer/fonts
-  if ! [ "$platform" == 'winbash' ]
+  echo "Checking for powerlevel10k theme"
+  if [ ! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]
   then
-    $HOME/Developer/fonts/install.sh
+    echo "installing powerlevel10k theme for oh-my-zsh"
+    git clone https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
   else
-    /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
-  fi
-else
-  echo "Fonts already installed, getting latest"
-  cd $HOME/Developer/fonts;git pull;cd $HOME
-  if ! [ "$platform" == 'winbash' ]
-  then
-    $HOME/Developer/fonts/install.sh
-  else
-    /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
+    echo "powerlevel10k theme already installed"
   fi
 fi
+
+echo ""
+
+# # Install pip
+# echo "Checking for pip ..."
+# if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' python3-pip | grep "ok installed$" > /dev/null
+# then
+#   sudo apt install python3-pip
+#   pip3 install --upgrade pip
+# elif [ "$platform" == 'darwin' ] && ! brew ls --versions python3 > /dev/null
+# then
+#   brew install python3
+# else
+#   echo "pip already installed"
+# fi
+
+# echo ""
+
+# # Install powerline fonts
+# echo "Checking for powerline fonts ..."
+# if [ ! -d "$HOME/Developer/fonts" ]
+# then
+#   git clone https://github.com/powerline/fonts.git --depth=1 $HOME/Developer/fonts
+#   if ! [ "$platform" == 'winbash' ]
+#   then
+#     $HOME/Developer/fonts/install.sh
+#   else
+#     /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
+#   fi
+# else
+#   echo "Fonts already installed, getting latest"
+#   cd $HOME/Developer/fonts;git pull;cd $HOME
+#   if ! [ "$platform" == 'winbash' ]
+#   then
+#     $HOME/Developer/fonts/install.sh
+#   else
+#     /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
+#   fi
+# fi
 
 # Alter console fonts
-if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
-then
-  echo "Setting up console font ..."
-  sudo cp $HOME/Developer/fonts/Terminus/PSF/*.psf.gz /usr/share/consolefonts
-  sudo cp /etc/default/console-setup /etc/default/console-setup.bak
-  sudo echo 'FONT="ter-powerline-v18n.psf.gz"' > /etc/default/console-setup
-fi
+# if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
+# then
+#   echo "Setting up console font ..."
+#   sudo cp $HOME/Developer/fonts/Terminus/PSF/*.psf.gz /usr/share/consolefonts
+#   sudo cp /etc/default/console-setup /etc/default/console-setup.bak
+#   sudo echo 'FONT="ter-powerline-v18n.psf.gz"' > /etc/default/console-setup
+# fi
 
-echo ""
+# echo ""
 
 # Install tmux
 echo "Checking for tmux ..."
@@ -167,12 +192,6 @@ then
   lxpanelctl restart
 fi
 
-if [ "$platform" == 'darwin' ]
-then
-  ln -sf $HOME/Developer/dotfiles/bashrc_darwin $HOME/.bashrc
-  ln -sf $HOME/Developer/dotfiles/bash_profile_darwin $HOME/.bash_profile
-fi
-
 if [ "$platform" == 'winbash' ]
 then
   ln -sf $HOME/Developer/dotfiles/bashrc_windows $HOME/.bashrc
@@ -183,5 +202,3 @@ echo ""
 # Install vim plugins
 echo "installing vim plugins ..."
 vim +PluginInstall +qall
-
-

@@ -1,3 +1,9 @@
 [user]
 	name = James Carscadden
 	email = james@carscadden.org
+[core]
+	excludesfile = ~/.gitignore_global
+[credential]
+	helper = !/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home/bin/java -Ddebug=false -Djava.net.useSystemProxies=true -jar /usr/local/Cellar/git-credential-manager/2.0.4/libexec/git-credential-manager-2.0.4.jar
+[pull]
+	rebase = true
