@@ -38,10 +38,13 @@ then
   echo "Checking for Zsh"
   if ! zsh --version > /dev/null
   then
-    echo "Installing Zsh"
-
-    echo "Setting default shell to Zsh"
-    #chsh -s /bin/zsh
+    if [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
+    then
+      echo "Installing Zsh"
+      sudo apt install zsh
+      echo "Setting default shell to Zsh"
+      chsh -s /bin/zsh
+    fi
   else
     echo "Zsh already installed"
   fi
