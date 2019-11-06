@@ -33,51 +33,42 @@ fi
 echo ""
 
 # Check for zsh
-if [ "$platform" == 'darwin' ] || [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
+echo "Checking for Zsh"
+if ! zsh --version > /dev/null
 then
-  echo "Checking for Zsh"
-  if ! zsh --version > /dev/null
+  if [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
   then
-    if [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
-    then
-      echo "Installing Zsh"
-      sudo apt install zsh
-      echo "Setting default shell to Zsh"
-      chsh -s /bin/zsh
-    fi
-  else
-    echo "Zsh already installed"
+    echo "Installing Zsh"
+    sudo apt install zsh
+    echo "Setting default shell to Zsh"
+    chsh -s /bin/zsh
   fi
+else
+  echo "Zsh already installed"
 fi
 
 echo ""
 
 # Install oh-my-zsh
-if [ "$platform" == 'darwin' ] || [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
+echo "Checking for oh-my-zsh"
+if [ ! -d "$HOME/.oh-my-zsh" ]
 then
-  echo "Checking for oh-my-zsh"
-  if [ ! -d "$HOME/.oh-my-zsh" ]
-  then
-    echo "installing oh-my-zsh"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-  else
-    echo "oh-my-zsh already installed"
-  fi
+  echo "installing oh-my-zsh"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+else
+  echo "oh-my-zsh already installed"
 fi
 
 echo ""
 
 # Install Powerlevel10k theme for oh-my-zsh
-if [ "$platform" == 'darwin' ] || [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
+echo "Checking for powerlevel10k theme"
+if [ ! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]
 then
-  echo "Checking for powerlevel10k theme"
-  if [ ! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]
-  then
-    echo "installing powerlevel10k theme for oh-my-zsh"
-    git clone https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
-  else
-    echo "powerlevel10k theme already installed"
-  fi
+  echo "installing powerlevel10k theme for oh-my-zsh"
+  git clone https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+else
+  echo "powerlevel10k theme already installed"
 fi
 
 echo ""
@@ -197,10 +188,10 @@ then
   lxpanelctl restart
 fi
 
-if [ "$platform" == 'winbash' ]
-then
-  ln -sf $HOME/Developer/dotfiles/bashrc_windows $HOME/.bashrc
-fi
+#if [ "$platform" == 'winbash' ]
+#then
+#  ln -sf $HOME/Developer/dotfiles/bashrc_windows $HOME/.bashrc
+#fi
 
 echo ""
 
