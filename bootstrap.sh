@@ -174,7 +174,7 @@ echo ""
 echo "Checking for dotfiles ..."
 if [ ! -d "$HOME/Developer/dotfiles" ]
 then
-  git clone https://bluedonkeygroup.visualstudio.com/DefaultCollection/Projects/_git/dotfiles $HOME/Developer/dotfiles
+  git clone https://github.com/JamesCarscadden/dotfiles.git $HOME/Developer/dotfiles
 else
   echo "dotfiles already present, getting latest"
   cd $HOME/Developer/dotfiles;git pull;cd $HOME
@@ -187,6 +187,8 @@ echo "Linking dotfiles ..."
 ln -sf $HOME/Developer/dotfiles/vimrc $HOME/.vimrc
 ln -sf $HOME/Developer/dotfiles/gitconfig $HOME/.gitconfig
 ln -sf $HOME/Developer/dotfiles/tmux.conf $HOME/.tmux.conf
+ln -sf $HOME/Developer/dotfiles/zshrc $HOME/.zshrc
+ln -sf $HOME/Developer/dotfiles/p10k.zsh $HOME/.p10k.zsh
 
 if [ "$platform" == 'raspberry' ]
 then
