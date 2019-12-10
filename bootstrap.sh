@@ -36,7 +36,7 @@ echo ""
 echo "Checking for Zsh"
 if ! zsh --version > /dev/null
 then
-  if [ "$platform" == 'raspberry' ] || [ "$platform" == 'linux' ]
+  if [ ! "$platform" == 'darwin' ]
   then
     echo "Installing Zsh"
     sudo apt install zsh
@@ -72,43 +72,6 @@ else
 fi
 
 echo ""
-
-# # Install pip
-# echo "Checking for pip ..."
-# if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' python3-pip | grep "ok installed$" > /dev/null
-# then
-#   sudo apt install python3-pip
-#   pip3 install --upgrade pip
-# elif [ "$platform" == 'darwin' ] && ! brew ls --versions python3 > /dev/null
-# then
-#   brew install python3
-# else
-#   echo "pip already installed"
-# fi
-
-# echo ""
-
-# # Install powerline fonts
-# echo "Checking for powerline fonts ..."
-# if [ ! -d "$HOME/Developer/fonts" ]
-# then
-#   git clone https://github.com/powerline/fonts.git --depth=1 $HOME/Developer/fonts
-#   if ! [ "$platform" == 'winbash' ]
-#   then
-#     $HOME/Developer/fonts/install.sh
-#   else
-#     /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
-#   fi
-# else
-#   echo "Fonts already installed, getting latest"
-#   cd $HOME/Developer/fonts;git pull;cd $HOME
-#   if ! [ "$platform" == 'winbash' ]
-#   then
-#     $HOME/Developer/fonts/install.sh
-#   else
-#     /mnt/c/windows/syswow64/WindowsPowerShell/v1.0/powershell.exe -File C:\\Users\\james\\AppData\\Local\\Packages\\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\\LocalState\\rootfs\\home\\james\\Developer\\fonts\\install.ps1
-#   fi
-# fi
 
 # Alter console fonts
 # if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
@@ -181,17 +144,20 @@ ln -sf $HOME/Developer/dotfiles/tmux.conf $HOME/.tmux.conf
 ln -sf $HOME/Developer/dotfiles/zshrc $HOME/.zshrc
 ln -sf $HOME/Developer/dotfiles/p10k.zsh $HOME/.p10k.zsh
 
+# Create Cache Dir
+echo "Create Cache Dir"
+if [ ! -d "$HOME/.cache/zsh" ]
+then
+  echo "Create Cache Dir"
+  mkdir "$HOME/.cache/zsh"
+fi
+
 if [ "$platform" == 'raspberry' ]
 then
   ln -sf $HOME/Developer/dotfiles/lxterminal.conf $HOME/.config/lxterminal/lxterminal.conf
   ln -sf $HOME/Developer/dotfiles/lxterminal.desktop $HOME/.local/share/applications/lxterminal.desktop
   lxpanelctl restart
 fi
-
-#if [ "$platform" == 'winbash' ]
-#then
-#  ln -sf $HOME/Developer/dotfiles/bashrc_windows $HOME/.bashrc
-#fi
 
 echo ""
 
