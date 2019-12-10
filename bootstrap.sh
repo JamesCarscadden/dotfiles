@@ -139,13 +139,18 @@ echo ""
 # Link preferences
 echo "Linking dotfiles ..."
 ln -sf $HOME/Developer/dotfiles/vimrc $HOME/.vimrc
-ln -sf $HOME/Developer/dotfiles/gitconfig $HOME/.gitconfig
 ln -sf $HOME/Developer/dotfiles/tmux.conf $HOME/.tmux.conf
 ln -sf $HOME/Developer/dotfiles/zshrc $HOME/.zshrc
 ln -sf $HOME/Developer/dotfiles/p10k.zsh $HOME/.p10k.zsh
 
+if [ "$platform" == 'darwin' ]
+then
+  ln -sf $HOME/Developer/dotfiles/gitconfig.darwin $HOME/.gitconfig
+else
+  ln -sf $HOME/Developer/dotfiles/gitconfig $HOME/.gitconfig
+fi
+
 # Create Cache Dir
-echo "Create Cache Dir"
 if [ ! -d "$HOME/.cache/zsh" ]
 then
   echo "Create Cache Dir"
