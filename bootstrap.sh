@@ -140,6 +140,7 @@ echo ""
 echo "Linking dotfiles ..."
 ln -sf $HOME/Developer/dotfiles/vimrc $HOME/.vimrc
 ln -sf $HOME/Developer/dotfiles/tmux.conf $HOME/.tmux.conf
+ln -sf $HOME/Developer/dotfiles/tmux.conf.local $HOME/.tmux.conf.local
 ln -sf $HOME/Developer/dotfiles/zshrc $HOME/.zshrc
 ln -sf $HOME/Developer/dotfiles/p10k.zsh $HOME/.p10k.zsh
 
