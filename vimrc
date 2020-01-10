@@ -71,6 +71,9 @@ colorscheme railscasts
 "" NET RW
 let g:netrw_liststyle = 3
 let g:netrw_winsize = 80
+let g:netrw_banner = 0
+let g:netrw_browse_split = 3
+
 
 "" Syntastic
 let g:syntastic_check_on_open=1
@@ -82,15 +85,16 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-l>l
 
 "" CTRL-P
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*\\node_modules\\*
 
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 
 augroup vimrcEx
   autocmd!
 
-  " When editiong a file, always jump to the last known cursor position.
+  " When editing a file, always jump to the last known cursor position.
   " Don't do it for commit messages, when the position is invalid, or when
   " inside an event handler (happens when dropping a file on gvim).
   autocmd BufReadPost *
