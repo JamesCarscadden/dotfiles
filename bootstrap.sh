@@ -41,7 +41,7 @@ then
     echo "Installing Zsh"
     sudo apt install zsh
     echo "Setting default shell to Zsh"
-    chsh -s /bin/zsh
+    chsh -s /bin/zsh $USER
   fi
 else
   echo "Zsh already installed"
@@ -170,3 +170,15 @@ echo ""
 # Install vim plugins
 echo "installing vim plugins ..."
 vim +PluginInstall +qall
+
+echo ""
+
+# Install kubectl
+echo "installing kubernetes kubectl ..."
+if [ ! "$platform" == 'darwin' ]
+then
+  sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+  echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+  sudo apt-get update && sudo apt-get install -y kubectl
+fi
