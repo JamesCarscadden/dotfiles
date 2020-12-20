@@ -25,7 +25,7 @@ echo ''
 echo "Checking for git ..."
 if [ ! "$platform" ==  'darwin' ] && ! dpkg-query -W -f='${Status}' git | grep "ok installed$" > /dev/null
 then
-  sudo apt install git
+  sudo apt install -y git
 else
   echo "Git already installed"
 fi
@@ -39,7 +39,7 @@ then
   if [ ! "$platform" == 'darwin' ]
   then
     echo "Installing Zsh"
-    sudo apt install zsh
+    sudo apt install -y zsh
     echo "Setting default shell to Zsh"
     sudo chsh -s /bin/zsh $USER
   fi
@@ -88,7 +88,7 @@ echo ""
 echo "Checking for tmux ..."
 if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' tmux | grep "ok installed$" > /dev/null
 then
-  sudo apt install tmux
+  sudo apt install -y tmux
 elif [ "$platform" == 'darwin' ] && ! brew ls --versions tmux > /dev/null
 then
   brew install tmux
@@ -102,7 +102,7 @@ echo ""
 echo "Checking for vim with scripting support ..."
 if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' vim-nox | grep "ok installed$" > /dev/null
 then
-  sudo apt install vim-nox
+  sudo apt install -y vim-nox
 elif [ "$platform" == 'darwin' ] && ! brew ls --versions macvim > /dev/null
 then
   brew install macvim --with-override-system-vim
@@ -181,8 +181,65 @@ echo ""
 echo "installing kubernetes kubectl ..."
 if [ ! "$platform" == 'darwin' ]
 then
-  sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
-  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-  echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-  sudo apt-get update && sudo apt-get install -y kubectl
+  if [ which kubectl > /dev/null ]
+  then
+    sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+    sudo apt-get update && sudo apt-get install -y kubectl
+  fi
+fi
+
+echo ""
+
+# Install docker
+echo "installing docker ..."
+if [ ! "$platform" == 'darwin' ]
+then
+  if [ which docker > /dev/null ]
+  then
+    curl -fsSL https://get.docker.com | sudo sh
+  fi
+fi
+
+# Add user to docker group.
+echo "add user to docker group ..."
+
+echo ""
+
+# Install nodejs
+echo "installing nodejs ..."
+if [ ! "$platform" == 'darwin' ]
+then
+  if [ which node > /dev/null ]
+  then
+    curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+  fi
+fi
+
+echo ""
+
+# Install yarn
+echo "installing yarn ..."
+if [ ! "$platform" == 'darwin' ]
+then
+  if [ which yarn > /dev/null ]
+  then
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt update && sudo apt install -y yarn
+  fi
+fi
+
+# install rvm
+echo "installing RVM ..."
+if [ ! "$platform" == 'darwin' ]
+then
+  if [ which rvm > /dev/null ]
+  then
+    curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+    curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
+    curl -sSL https://get.rvm.io | bash -s stable --ruby=ruby-2.7
+  fi
 fi
