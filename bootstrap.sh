@@ -41,7 +41,7 @@ then
     echo "Installing Zsh"
     sudo apt install zsh
     echo "Setting default shell to Zsh"
-    chsh -s /bin/zsh $USER
+    sudo chsh -s /bin/zsh $USER
   fi
 else
   echo "Zsh already installed"
@@ -154,6 +154,10 @@ fi
 # Create Cache Dir
 if [ ! -d "$HOME/.cache/zsh" ]
 then
+  if [ ! -d "$HOME/.cache" ]
+  then
+    mkdir "$HOME/.cache"
+  fi
   echo "Create Cache Dir"
   mkdir "$HOME/.cache/zsh"
 fi
