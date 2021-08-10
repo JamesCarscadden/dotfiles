@@ -73,6 +73,10 @@ fi
 
 echo ""
 
+# Get SourceCode Pro nerdfont
+echo "Getting SourceCode Pro nerdfont"
+curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.ttf > ~/.fonts/Sauce\ Code\ Pro\ Nerd\ Font\ Complete\ Mono.ttf
+
 # Alter console fonts
 # if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
 # then
@@ -173,7 +177,7 @@ echo ""
 
 # Install vim plugins
 echo "installing vim plugins ..."
-vim +PluginInstall +qall
+vim +PluginInstall +qall || true
 
 echo ""
 
@@ -181,7 +185,7 @@ echo ""
 echo "installing kubernetes kubectl ..."
 if [ ! "$platform" == 'darwin' ]
 then
-  if [ which kubectl > /dev/null ]
+  if ! which kubectl > /dev/null
   then
     sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
     curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -196,7 +200,7 @@ echo ""
 echo "installing docker ..."
 if [ ! "$platform" == 'darwin' ]
 then
-  if [ which docker > /dev/null ]
+  if ! which docker > /dev/null
   then
     curl -fsSL https://get.docker.com | sudo sh
   fi
@@ -211,7 +215,7 @@ echo ""
 echo "installing nodejs ..."
 if [ ! "$platform" == 'darwin' ]
 then
-  if [ which node > /dev/null ]
+  if ! which node > /dev/null
   then
     curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
     sudo apt-get install -y nodejs
@@ -224,7 +228,7 @@ echo ""
 echo "installing yarn ..."
 if [ ! "$platform" == 'darwin' ]
 then
-  if [ which yarn > /dev/null ]
+  if ! which yarn > /dev/null
   then
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -236,10 +240,23 @@ fi
 echo "installing RVM ..."
 if [ ! "$platform" == 'darwin' ]
 then
-  if [ which rvm > /dev/null ]
+  if ! which rvm > /dev/null
   then
     curl -sSL https://rvm.io/mpapis.asc | gpg --import -
     curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
     curl -sSL https://get.rvm.io | bash -s stable --ruby=ruby-2.7
   fi
 fi
+
+# install visual studio code
+echo "installing VSCode ..."
+if [ ! "$platform" == 'darwin' ]
+then
+  if ! which code > /dev/null
+  then
+    curl -OL https://aka.ms/linux-arm64-deb
+    sudo apt install -y ./code*deb
+    rm code*deb
+  fi
+fi
+
