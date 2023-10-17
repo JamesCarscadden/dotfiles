@@ -4,7 +4,7 @@
 platform='unknown'
 unamestr=$(uname -a)
 case "$unamestr" in
-  *'armv'*)
+  *'aarch'*)
     echo 'Rasbian'
     platform='raspberry'
     ;;
@@ -32,6 +32,19 @@ fi
 
 echo ""
 
+# Get dotfiles
+echo "Checking for dotfiles ..."
+if [ ! -d "$HOME/Developer/dotfiles" ]
+then
+  git clone https://github.com/JamesCarscadden/dotfiles.git $HOME/Developer/dotfiles
+else
+  echo "dotfiles already present, getting latest"
+  cd $HOME/Developer/dotfiles;git pull;cd $HOME
+fi
+
+echo ""
+
+
 # Check for zsh
 echo "Checking for Zsh"
 if ! zsh --version > /dev/null
@@ -42,6 +55,8 @@ then
     sudo apt install -y zsh
     echo "Setting default shell to Zsh"
     sudo chsh -s /bin/zsh $USER
+    echo "Restart terminal and bootstrap script"
+    exit
   fi
 else
   echo "Zsh already installed"
@@ -128,18 +143,6 @@ fi
 
 echo ""
 
-# Get dotfiles
-echo "Checking for dotfiles ..."
-if [ ! -d "$HOME/Developer/dotfiles" ]
-then
-  git clone https://github.com/JamesCarscadden/dotfiles.git $HOME/Developer/dotfiles
-else
-  echo "dotfiles already present, getting latest"
-  cd $HOME/Developer/dotfiles;git pull;cd $HOME
-fi
-
-echo ""
-
 # Link preferences
 echo "Linking dotfiles ..."
 ln -sf $HOME/Developer/dotfiles/vimrc $HOME/.vimrc
@@ -196,67 +199,7 @@ fi
 
 echo ""
 
-# Install docker
-echo "installing docker ..."
-if [ ! "$platform" == 'darwin' ]
-then
-  if ! which docker > /dev/null
-  then
-    curl -fsSL https://get.docker.com | sudo sh
-  fi
-fi
-
-# Add user to docker group.
-echo "add user to docker group ..."
-
-echo ""
-
-# Install nodejs
-echo "installing nodejs ..."
-if [ ! "$platform" == 'darwin' ]
-then
-  if ! which node > /dev/null
-  then
-    curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
-    sudo apt-get install -y nodejs
-  fi
-fi
-
-echo ""
-
-# Install yarn
-echo "installing yarn ..."
-if [ ! "$platform" == 'darwin' ]
-then
-  if ! which yarn > /dev/null
-  then
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    sudo apt update && sudo apt install -y yarn
-  fi
-fi
-
-# install rvm
-echo "installing RVM ..."
-if [ ! "$platform" == 'darwin' ]
-then
-  if ! which rvm > /dev/null
-  then
-    curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-    curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -
-    curl -sSL https://get.rvm.io | bash -s stable --ruby=ruby-2.7
-  fi
-fi
-
-# install visual studio code
-echo "installing VSCode ..."
-if [ ! "$platform" == 'darwin' ]
-then
-  if ! which code > /dev/null
-  then
-    curl -OL https://aka.ms/linux-arm64-deb
-    sudo apt install -y ./code*deb
-    rm code*deb
-  fi
-fi
-
+# install podman
+# install rtx
+# install ruby
+# install node
