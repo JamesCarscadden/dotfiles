@@ -207,6 +207,46 @@ fi
 echo ""
 
 # install podman
+echo "installing podman"
+if [ ! "$platform" == 'darwin' ]
+then
+  if ! which podman > /dev/null
+  then
+    sudo apt-get update && sudo apt-get install -y podman
+  fi
+fi
+
+echo ""
+
 # install rtx
-# install ruby
-# install node
+echo "installing rtx ..."
+if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' rtx | grep "ok installed$" > /dev/null
+then
+  wget -qO - https://rtx.pub/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/rtx-archive-keyring.gpg 1> /dev/null
+  if [ "$platform" == 'raspberry' ]
+    echo "deb [signed-by=/etc/apt/keyrings/rtx-archive-keyring.gpg arch=arm64] https://rtx.pub/deb stable main" | sudo tee /etc/apt/sources.list.d/rtx.list
+  elif
+    echo "deb [signed-by=/etc/apt/keyrings/rtx-archive-keyring.gpg arch=amd64] https://rtx.pub/deb stable main" | sudo tee /etc/apt/sources.list.d/rtx.list
+  fi
+  sudo apt install -y rtx
+elif [ "$platform" == 'darwin' ] && ! brew ls --versions rtx > /dev/null
+then
+  brew install rtx
+else
+  echo "rtx already installed"
+fi
+
+# install ruby with rtx
+# install node with rtx
+
+# install visual studio code
+echo "installing VSCode ..."
+if [ ! "$platform" == 'darwin' ]
+then
+  if ! which code > /dev/null
+  then
+    curl -OL https://aka.ms/linux-arm64-deb
+    sudo apt install -y ./code*deb
+    rm code*deb
+  fi
+fi
