@@ -88,9 +88,16 @@ fi
 
 echo ""
 
+# Create Fonts Dir
+if [ ! -d "$HOME/.local/share/fonts" ]
+then
+  mkdir "$HOME/.local/share/fonts"
+fi
+
 # Get SourceCode Pro nerdfont
 echo "Getting SourceCode Pro nerdfont"
-curl -L https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/SourceCodePro/Regular/complete/Sauce%20Code%20Pro%20Nerd%20Font%20Complete%20Mono.ttf > ~/.fonts/Sauce\ Code\ Pro\ Nerd\ Font\ Complete\ Mono.ttf
+curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Regular/SauceCodeProNerdFontMono-Regular.ttf > ~/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf
+fc-cache -f
 
 # Alter console fonts
 # if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
