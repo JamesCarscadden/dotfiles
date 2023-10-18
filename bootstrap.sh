@@ -25,7 +25,7 @@ echo ''
 echo "Checking for git ..."
 if [ ! "$platform" ==  'darwin' ] && ! dpkg-query -W -f='${Status}' git | grep "ok installed$" > /dev/null
 then
-  sudo apt install -y git
+  sudo apt install -y git git-credential-oauth
 else
   echo "Git already installed"
 fi
