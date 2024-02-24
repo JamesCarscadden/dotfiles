@@ -115,4 +115,4 @@ alias zshconfig="vim ~/.zshrc"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 source /Users/james/.docker/init-zsh.sh || true # Added by Docker Desktop
-eval "$(rtx activate)"
+eval "$(mise activate)"
