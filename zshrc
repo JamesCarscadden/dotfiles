@@ -75,7 +75,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker npm rtx)
+plugins=(git docker npm mise)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -114,5 +114,8 @@ alias zshconfig="vim ~/.zshrc"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source /Users/james/.docker/init-zsh.sh || true # Added by Docker Desktop
+if [[ $(uname -a) == Darwin* ]]; then
+  source /Users/james/.docker/init-zsh.sh || true # Added by Docker Desktop
+fi
+
 eval "$(mise activate)"
