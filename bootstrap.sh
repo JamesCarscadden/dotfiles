@@ -95,9 +95,9 @@ then
 fi
 
 # Get SourceCode Pro nerdfont
-echo "Getting SourceCode Pro nerdfont"
-curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Regular/SauceCodeProNerdFontMono-Regular.ttf > ~/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf
-fc-cache -f
+#echo "Getting SourceCode Pro nerdfont"
+#curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Regular/SauceCodeProNerdFontMono-Regular.ttf > ~/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf
+#fc-cache -f
 
 # Alter console fonts
 # if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
@@ -207,7 +207,7 @@ fi
 echo ""
 
 # install podman
-echo "installing podman"
+echo "installing podman ..."
 if [ ! "$platform" == 'darwin' ]
 then
   if ! which podman > /dev/null
@@ -224,8 +224,9 @@ if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' rtx | grep "o
 then
   wget -qO - https://rtx.pub/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/rtx-archive-keyring.gpg 1> /dev/null
   if [ "$platform" == 'raspberry' ]
+  then
     echo "deb [signed-by=/etc/apt/keyrings/rtx-archive-keyring.gpg arch=arm64] https://rtx.pub/deb stable main" | sudo tee /etc/apt/sources.list.d/rtx.list
-  elif
+  else
     echo "deb [signed-by=/etc/apt/keyrings/rtx-archive-keyring.gpg arch=amd64] https://rtx.pub/deb stable main" | sudo tee /etc/apt/sources.list.d/rtx.list
   fi
   sudo apt install -y rtx
@@ -236,6 +237,7 @@ else
   echo "rtx already installed"
 fi
 
+echo ""
 # install ruby with rtx
 # install node with rtx
 
@@ -245,8 +247,6 @@ if [ ! "$platform" == 'darwin' ]
 then
   if ! which code > /dev/null
   then
-    curl -OL https://aka.ms/linux-arm64-deb
-    sudo apt install -y ./code*deb
-    rm code*deb
+    sudo apt install -y code
   fi
 fi
