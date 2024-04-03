@@ -118,4 +118,4 @@ if [[ $(uname -a) == Darwin* ]]; then
   source /Users/james/.docker/init-zsh.sh || true # Added by Docker Desktop
 fi
 
-eval "$(mise activate)"
+eval "$(mise activate zsh)"

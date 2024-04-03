@@ -88,16 +88,25 @@ fi
 
 echo ""
 
+# Get SourceCode Pro nerdfont
+echo "Checking for nerdfont ..."
 # Create Fonts Dir
 if [ ! -d "$HOME/.local/share/fonts" ]
 then
   mkdir "$HOME/.local/share/fonts"
 fi
 
-# Get SourceCode Pro nerdfont
-#echo "Getting SourceCode Pro nerdfont"
-#curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/Regular/SauceCodeProNerdFontMono-Regular.ttf > ~/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf
-#fc-cache -f
+if [ ! "$platform" == 'darwin' ]
+then
+  if [ ! -f "$HOME/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf" ]
+  then
+    echo "Getting SourceCode Pro nerdfont"
+    curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Regular.ttf > ~/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf
+    fc-cache -f
+  else
+    echo "Font already installed"
+  fi
+fi
 
 # Alter console fonts
 # if [ $platform == 'linux' ] || [ "$platform" == 'raspberry' ]
@@ -108,7 +117,7 @@ fi
 #   sudo echo 'FONT="ter-powerline-v18n.psf.gz"' > /etc/default/console-setup
 # fi
 
-# echo ""
+echo ""
 
 # Install tmux
 echo "Checking for tmux ..."
@@ -198,8 +207,9 @@ then
   if ! which kubectl > /dev/null
   then
     sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
-    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+    sudo install -dm 755 /etc/apt/keyrings
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
     sudo apt-get update && sudo apt-get install -y kubectl
   fi
 fi
@@ -218,28 +228,28 @@ fi
 
 echo ""
 
-# install rtx
-echo "installing rtx ..."
-if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' rtx | grep "ok installed$" > /dev/null
+# install mise
+echo "installing mise ..."
+if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' mise | grep "ok installed$" > /dev/null
 then
-  wget -qO - https://rtx.pub/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/rtx-archive-keyring.gpg 1> /dev/null
+  sudo install -dm 755 /etc/apt/keyrings
+
+  wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg 1> /dev/null
   if [ "$platform" == 'raspberry' ]
   then
-    echo "deb [signed-by=/etc/apt/keyrings/rtx-archive-keyring.gpg arch=arm64] https://rtx.pub/deb stable main" | sudo tee /etc/apt/sources.list.d/rtx.list
+    echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=arm64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
   else
-    echo "deb [signed-by=/etc/apt/keyrings/rtx-archive-keyring.gpg arch=amd64] https://rtx.pub/deb stable main" | sudo tee /etc/apt/sources.list.d/rtx.list
+    echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
   fi
-  sudo apt install -y rtx
-elif [ "$platform" == 'darwin' ] && ! brew ls --versions rtx > /dev/null
+  sudo apt update && sudo apt install -y mise
+elif [ "$platform" == 'darwin' ] && ! brew ls --versions mise > /dev/null
 then
-  brew install rtx
+  brew install mise
 else
-  echo "rtx already installed"
+  echo "mise already installed"
 fi
 
 echo ""
-# install ruby with rtx
-# install node with rtx
 
 # install visual studio code
 echo "installing VSCode ..."
