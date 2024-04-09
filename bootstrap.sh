@@ -23,7 +23,7 @@ echo ''
 # Install git
 # Assume already installed on darwin
 echo "Checking for git ..."
-if [ ! "$platform" ==  'darwin' ] && ! dpkg-query -W -f='${Status}' git | grep "ok installed$" > /dev/null
+if [ ! "$platform" =  'darwin' ] && ! dpkg-query -W -f='${Status}' git | grep "ok installed$" > /dev/null
 then
   sudo apt install -y git git-credential-oauth
 else
@@ -49,7 +49,7 @@ echo ""
 echo "Checking for Zsh"
 if ! zsh --version > /dev/null
 then
-  if [ ! "$platform" == 'darwin' ]
+  if [ ! "$platform" = 'darwin' ]
   then
     echo "Installing Zsh"
     sudo apt install -y zsh
@@ -91,21 +91,25 @@ echo ""
 # Get SourceCode Pro nerdfont
 echo "Checking for nerdfont ..."
 # Create Fonts Dir
-if [ ! -d "$HOME/.local/share/fonts" ]
+if [ ! "$platform" = 'darwin' ] && [ ! -d "$HOME/.local/share/fonts" ]
 then
   mkdir "$HOME/.local/share/fonts"
 fi
 
-if [ ! "$platform" == 'darwin' ]
+if [ ! "$platform" = 'darwin' ]
 then
   if [ ! -f "$HOME/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf" ]
   then
     echo "Getting SourceCode Pro nerdfont"
-    curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Regular.ttf > ~/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf
+    curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Regular.ttf > "$HOME/.local/share/fonts/SauceCodeProNerdFontMono-Regular.ttf"
     fc-cache -f
-  else
-    echo "Font already installed"
   fi
+elif [ "$platform" = 'darwin' ] && ! atsutil fonts -list | grep "SauceCodePro" > /dev/null
+then
+  curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/SourceCodePro/SauceCodeProNerdFontMono-Regular.ttf > "$HOME/Downloads/SauceCodeProNerdFontMono-Regular.ttf"
+  echo "need to install font on mac"
+else
+  echo "Font already installed"
 fi
 
 # Alter console fonts
@@ -121,10 +125,10 @@ echo ""
 
 # Install tmux
 echo "Checking for tmux ..."
-if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' tmux | grep "ok installed$" > /dev/null
+if [ ! "$platform" = 'darwin' ] && ! dpkg-query -W -f='${Status}' tmux | grep "ok installed$" > /dev/null
 then
   sudo apt install -y tmux
-elif [ "$platform" == 'darwin' ] && ! brew ls --versions tmux > /dev/null
+elif [ "$platform" = 'darwin' ] && ! brew ls --versions tmux > /dev/null
 then
   brew install tmux
 else
@@ -135,12 +139,12 @@ echo ""
 
 # Install vim (with python support)
 echo "Checking for vim with scripting support ..."
-if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' vim-nox | grep "ok installed$" > /dev/null
+if [ ! "$platform" = 'darwin' ] && ! dpkg-query -W -f='${Status}' vim-nox | grep "ok installed$" > /dev/null
 then
   sudo apt install -y vim-nox
-elif [ "$platform" == 'darwin' ] && ! brew ls --versions macvim > /dev/null
+elif [ "$platform" = 'darwin' ] && ! brew ls --versions macvim > /dev/null
 then
-  brew install macvim --with-override-system-vim
+  brew install macvim
 else
   echo "vim with scripting already installed"
 fi
@@ -167,7 +171,7 @@ ln -sf $HOME/Developer/dotfiles/tmux.conf.local $HOME/.tmux.conf.local
 ln -sf $HOME/Developer/dotfiles/zshrc $HOME/.zshrc
 ln -sf $HOME/Developer/dotfiles/p10k.zsh $HOME/.p10k.zsh
 
-if [ "$platform" == 'darwin' ]
+if [ "$platform" = 'darwin' ]
 then
   ln -sf $HOME/Developer/dotfiles/gitconfig.darwin $HOME/.gitconfig
 else
@@ -185,7 +189,7 @@ then
   mkdir "$HOME/.cache/zsh"
 fi
 
-if [ "$platform" == 'raspberry' ]
+if [ "$platform" = 'raspberry' ]
 then
   ln -sf $HOME/Developer/dotfiles/lxterminal.conf $HOME/.config/lxterminal/lxterminal.conf
   ln -sf $HOME/Developer/dotfiles/lxterminal.desktop $HOME/.local/share/applications/lxterminal.desktop
@@ -202,7 +206,7 @@ echo ""
 
 # Install kubectl
 echo "installing kubernetes kubectl ..."
-if [ ! "$platform" == 'darwin' ]
+if [ ! "$platform" = 'darwin' ]
 then
   if ! which kubectl > /dev/null
   then
@@ -218,7 +222,7 @@ echo ""
 
 # install podman
 echo "installing podman ..."
-if [ ! "$platform" == 'darwin' ]
+if [ ! "$platform" = 'darwin' ]
 then
   if ! which podman > /dev/null
   then
@@ -230,19 +234,19 @@ echo ""
 
 # install mise
 echo "installing mise ..."
-if [ ! "$platform" == 'darwin' ] && ! dpkg-query -W -f='${Status}' mise | grep "ok installed$" > /dev/null
+if [ ! "$platform" = 'darwin' ] && ! dpkg-query -W -f='${Status}' mise | grep "ok installed$" > /dev/null
 then
   sudo install -dm 755 /etc/apt/keyrings
 
   wget -qO - https://mise.jdx.dev/gpg-key.pub | gpg --dearmor | sudo tee /etc/apt/keyrings/mise-archive-keyring.gpg 1> /dev/null
-  if [ "$platform" == 'raspberry' ]
+  if [ "$platform" = 'raspberry' ]
   then
     echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=arm64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
   else
     echo "deb [signed-by=/etc/apt/keyrings/mise-archive-keyring.gpg arch=amd64] https://mise.jdx.dev/deb stable main" | sudo tee /etc/apt/sources.list.d/mise.list
   fi
   sudo apt update && sudo apt install -y mise
-elif [ "$platform" == 'darwin' ] && ! brew ls --versions mise > /dev/null
+elif [ "$platform" = 'darwin' ] && ! brew ls --versions mise > /dev/null
 then
   brew install mise
 else
@@ -253,7 +257,7 @@ echo ""
 
 # install visual studio code
 echo "installing VSCode ..."
-if [ ! "$platform" == 'darwin' ]
+if [ ! "$platform" = 'darwin' ]
 then
   if ! which code > /dev/null
   then
